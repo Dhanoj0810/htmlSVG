@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Truchet SVG</title>
+    <style>
+      * {
+        margin: 0px;
+        border: 0px;
+      }
+    </style>
+  </head>
+  <body style="margin: 0">
+    <div style="width: 100vw; height: 100vh">
+      <svg
+        id="patternSVG"
+        width="100%"
+        height="100%"
+        style="background-color: #ffffff; margin: 1em"
+      ></svg>
+    </div>
+
+    <script>
+      const getRandomInteger = (start, end) =>
+        start + Math.floor(Math.random() * (end - start));
+
+      const createLineTag = (x1, x2, y1, y2) =>
+        `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="black" />`;
+
+      const generateLinePattern = (width, height) => {
+        const xCoordinateShifts = [
+          { start: 10, end: 0 },
+          { start: 10, end: 20 },
+          { start: 20, end: 10 },
+          { start: 0, end: 10 },
+        ];
+
+        const lineTags = [];
+
+        for (let yCoord = 0; yCoord < height; yCoord += 20) {
+          for (let xCoord = 0; xCoord < width; xCoord += 20) {
+            const index = getRandomInteger(0, 2);
+            const { start: startX1, end: endX1 } = xCoordinateShifts[index];
+            const { start: startX2, end: endX2 } = xCoordinateShifts[index + 2];
+
+            lineTags.push(
+              createLineTag(
+                xCoord + startX1,
+                xCoord + endX1,
+                yCoord,
+                yCoord + 10
+              ),
+              createLineTag(
+                xCoord + startX2,
+                xCoord + endX2,
+                yCoord + 10,
+                yCoord + 20
+              )
+            );
+          }
+        }
+
+        return lineTags.join("");
+      };
+
+      const svgElement = document.getElementById("patternSVG");
+
+      setInterval(() => {
+        const pattern = generateLinePattern(1750, 1080);
+
+        svgElement.innerHTML = pattern;
+      }, 200);
+    </script>
+    <style>
+      #patternSVG {
+        background-color: skyblue;
+      }
+    </style>
+  </body>
+</html>
