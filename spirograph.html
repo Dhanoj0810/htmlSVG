@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Spirograph SVG</title>
+    <style>
+      .white {
+        fill: rgb(255, 255, 255);
+        z-index: 3;
+      }
+    </style>
+  </head>
+  <body>
+    <svg
+      id="pattern"
+      width="1750px"
+      height="1080px"
+      style="background-color: #ffffff; margin: 1em"
+    ></svg>
+    <script>
+      const generateCircle = (firstRadius) => {
+        let radius = firstRadius;
+        const circles = [];
+        const styles = ["", "white"];
+
+        for (let radius = firstRadius; radius > 0; radius -= 50) {
+          circles.push({ radius: radius, style: styles[(radius / 50) % 2] });
+        }
+
+        return circles;
+      };
+      const tag = ({ radius, style }) =>
+        `<circle cx="875" cy="540" r="${radius}" class="${style}" />`;
+
+      const generateCircleTags = (circles) => {
+        const circleTags = circles.map(tag);
+
+        return circleTags.join("\n");
+      };
+
+      const circlesObj = generateCircle(1000);
+      const circleTags = generateCircleTags(circlesObj);
+      const svgElement = document.getElementById("pattern");
+      svgElement.innerHTML = circleTags;
+      const circles = svgElement.querySelectorAll("circle");
+
+      setInterval(() => {
+        circles.forEach((circle) => {
+          circle.classList.toggle("white");
+        });
+      }, 300);
+    </script>
+  </body>
+</html>
